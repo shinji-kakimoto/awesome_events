@@ -15,7 +15,7 @@ private
   end
 
   def authenticate
-    return inf logged_in?
+    return if logged_in?
     redirect_to root_path, alert: 'ログインしてください'
   end
 end

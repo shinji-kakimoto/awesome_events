@@ -15,7 +15,6 @@
           <%= image_tag @event.owner.image_url %>
           <%= "@#{@event.owner.nickname}" %>
         <% end %>
-        </div>
       </div>
     </div>
 
@@ -24,7 +23,7 @@
         開催時間
       </div>
       <div class="panel-body">
-        <%= @event.start_time.strftime('%Y/%m/%d %H:%M' %> - <%= @event.end_time.strftime('%Y/%m/%d %H:%M' %>
+        <%= @event.start_time.strftime('%Y/%m/%d %H:%M') %> - <%= @event.end_time.strftime('%Y/%m/%d %H:%M') %>
       </div>
     </div>
 
