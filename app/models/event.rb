@@ -1,4 +1,6 @@
 class Event < ApplicationRecord
+  # HACK: あえてusersには参照しないという?
+  has_many :tickets, dependent: :destroy
   belongs_to :owner, class_name: 'User'
   validates :name, length: { maximum: 50 }, presence: true
   validates :place, length: { maximum: 100 }, presence: true
