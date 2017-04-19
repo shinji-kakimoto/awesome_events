@@ -20,7 +20,8 @@ class User < ApplicationRecord
 
   private
 
-  # TODO: ユーザが削除できる
+  # HACK: https://stackoverflow.com/questions/123078/how-do-i-validate-on-destroy-in-rails#comment59333149_123190
+  # rails5からは`throw :abort`する必要がある
   def check_all_events_finished
     now = Time.zone.now
     # HACK: パラメータをsymbolで渡せる
@@ -30,7 +31,7 @@ class User < ApplicationRecord
     if participating_events.where(':now < end_time', now: now).exists?
       errors[:base] << '未終了の参加イベントが存在します。'
     end
-    errors.blank?
+    throw :abort unless errors.blank?
   end
 
 end

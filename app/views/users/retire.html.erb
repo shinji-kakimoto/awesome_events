@@ -5,7 +5,7 @@
 <% if current_user.errors.any? %>
   <div class="alert alert-danger">
     <ul>
-      <% current_user.full_messages.each do |msg| %>
+      <% current_user.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>
