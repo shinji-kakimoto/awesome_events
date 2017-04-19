@@ -7,6 +7,14 @@ class Event < ApplicationRecord
   validates :end_time, presence: true
   validate :start_time_should_be_before_end_time
 
+  # HACK: ユーザを引数に情報を渡す。まさにメソッドでうまくやりとりしてるな。。。
+  # view側で表示制御を行うよう。controllerでももちろんauthenticateでチェックしている。
+  # それぞれで矛盾が起こらないようになっている。
+  def created_by?(user)
+    return false unless user
+    owner_id = user.id
+  end
+
 private
   def start_time_should_be_before_end_time
     return unless start_time && end_time
