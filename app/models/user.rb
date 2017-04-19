@@ -1,6 +1,10 @@
 class User < ApplicationRecord
-  has_many :created_events, class_name: 'Event', foreign_key: :owner_id
-  has_many :tickets
+  before_destroy :check_all_events_finished
+
+  has_many :created_events, class_name: 'Event', foreign_key: :owner_id, dependent: :nullify
+  has_many :tickets, dependent: :nullify
+  has_many :participating_events, through: :tickets, source: :event
+
 
   def self.find_or_create_from_auth_hash(auth_hash)
     provider  = auth_hash[:provider]
@@ -13,4 +17,20 @@ class User < ApplicationRecord
       user.image_url = image_url
     end
   end
+
+  private
+
+  # TODO: ユーザが削除できる
+  def check_all_events_finished
+    now = Time.zone.now
+    # HACK: パラメータをsymbolで渡せる
+    if created_events.where(':now < end_time', now: now).exists?
+      errors[:base] << '公開中の未終了イベントが存在します。'
+    end
+    if participating_events.where(':now < end_time', now: now).exists?
+      errors[:base] << '未終了の参加イベントが存在します。'
+    end
+    errors.blank?
+  end
+
 end
