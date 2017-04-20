@@ -37,6 +37,12 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'kaminari'
+gem 'kaminari-bootstrap'
+gem 'ransack'
+gem 'carrierwave'
+gem 'carrierwave-i18n'
+gem 'mini_magick'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
