@@ -50,6 +50,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'rails-controller-testing' # controllerのテストは廃止されたが、勉強のため
+  gem 'brakeman', :require => false # applicationの脆弱性を静的解析
+  gem "rails_best_practices" # コードの品質を静的解析
 end
 
 group :test do
@@ -58,6 +60,7 @@ group :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'launchy'
+  gem 'simplecov', :require => false # テストcoverage
 end
 
 group :development do
