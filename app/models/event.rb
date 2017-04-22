@@ -26,6 +26,12 @@ class Event < ApplicationRecord
     []
   end
 
+  def rails?
+    # result = name =~ /Rails/
+    # !result.nil?
+    !!(name =~ /Rails/)
+  end
+
 private
   def start_time_should_be_before_end_time
     return unless start_time && end_time
