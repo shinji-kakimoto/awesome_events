@@ -5,8 +5,11 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
-require 'rspec/rails'
 require 'shoulda/matchers'
+
+require 'capybara/rails'
+require 'capybara/rspec'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -32,6 +35,9 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
+  # HACK: FactoryGirlのsyntaxsugarを追加
+  config.include FactoryGirl::Syntax::Methods
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -56,6 +62,19 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # HACK: twitterを利用した認証のテストは下記の値が返る
+  config.before(:all, type: :feature) do
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new({
+      provider: 'twitter',
+      uid: '12345',
+      info: {
+        nickname: 'netwillnet',
+        image: 'http://example.com/netwillnet.jpg',
+      }
+    })
+  end
 end
 
 Shoulda::Matchers.configure do |config|

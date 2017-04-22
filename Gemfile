@@ -48,10 +48,13 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'rails-controller-testing' # controllerのテストは廃止されたが、勉強のため
 end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'capybara'
 end
 
 group :development do

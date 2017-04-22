@@ -15,7 +15,7 @@ class Event < ApplicationRecord
   # それぞれで矛盾が起こらないようになっている。
   def created_by?(user)
     return false unless user
-    owner_id = user.id
+    owner_id == user.id
   end
 
   def self.ransackable_attributes(auth_object = nil)
