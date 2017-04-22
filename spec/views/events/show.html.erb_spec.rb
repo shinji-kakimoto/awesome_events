@@ -6,18 +6,21 @@ RSpec.describe "events/show", type: :view do
     # https://github.com/rspec/rspec-rails/issues/1076
     # stubが動かん
     before do
+      # http://qiita.com/yoot/items/5628257a6fa1ffa5db31
+      def view.logged_in?; end
+      def view.current_user; end
       # HACK: viewオブジェクトにlogged_in?というメソッドを仮に定義(stub)
-      allow(view).to receive(:logged_in?) { :value }
-      allow(view).to receive(:current_user).and_return(false)
+      allow(view).to receive(:logged_in?) { false }
+      allow(view).to receive(:current_user) { nil }
     end
 
     context 'かつ @event.ownerがnilのとき' do
       before do
         assign(:event, create(:event, owner: nil))
-        assign(:ticket, [])
+        assign(:tickets, [])
       end
 
-      xit '"退会したユーザです"と表示されること' do
+      it '"退会したユーザです"と表示されること' do
         render
         expect(rendered).to match /退会したユーザです/
       end

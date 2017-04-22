@@ -7,9 +7,9 @@ RSpec.feature "CreateTickets", type: :feature, js: true do
     before do
       visit root_path
       click_link 'Twitterでログイン'
+      sleep 1
       visit event_path(event)
       click_on '参加する'
-      sleep 3
     end
 
     it 'コメント入力用のモーダルウィンドウが表示されていること' do
