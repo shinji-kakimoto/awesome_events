@@ -1,13 +1,23 @@
 require 'rails_helper'
 
-# TODO: テストが通らん!参加ボタンはある。jsの設定？
 RSpec.feature "CreateTickets", type: :feature, js: true do
+  include LoginHelper::Feature
   let!(:event) { create :event }
+
+  context '未ログインユーザが、イベント詳細ページで"参加する"をクリックしたとき' do
+    before do
+      visit event_path(event)
+      click_on '参加する'
+    end
+
+    it '"ログインしてください"と表示されていること' do
+      expect(page).to have_content('ログインしてください')
+    end
+  end
+
   context 'ログインユーザが、イベント詳細ページで"参加する"をクリックしたとき' do
     before do
-      visit root_path
-      click_link 'Twitterでログイン'
-      sleep 1
+      login
       visit event_path(event)
       click_on '参加する'
     end
@@ -28,6 +38,20 @@ RSpec.feature "CreateTickets", type: :feature, js: true do
 
       it '参加表明したユーザ名が表示されていること' do
         expect(page).to have_content('@netwillnet')
+      end
+    end
+
+    context 'かつ、コメントに長文を入力し送信ボタンをおしたとき' do
+      before do
+        fill_in 'ticket_comment', with: '参加します！' * 100
+        click_button '送信'
+      end
+
+      it '"このイベントに参加表明しました"と表示されていないこと' do
+        expect(page).to have_no_content('このイベントに参加表明しました')
+      end
+      it 'なんらかのエラー表示がされていること' do
+        expect(page).to have_css('.alert.alert-danger')
       end
     end
   end

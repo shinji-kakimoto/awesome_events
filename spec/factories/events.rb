@@ -8,5 +8,10 @@ FactoryGirl.define do
     sequence(:content) { |i| "イベント本文#{i}" }
     start_time { rand(1..30).days.from_now }
     end_time { start_time + rand(1..30).hours }
+
+    factory :invalid_event do
+      name { nil }
+    end
+
   end
 end
